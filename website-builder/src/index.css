@@ -22,3 +22,19 @@ code {
 .grid:hover {
   background-color: red;
 }
+
+div.image::before {
+  content:url(https://static01.nyt.com/images/2019/07/13/arts/bob-ross-oak_blue-ridge-falls/bob-ross-oak_blue-ridge-falls-jumbo-v2.jpg?quality=75&auto=webp);
+}
+
+img {
+  object-fit: cover;
+}
+
+.rnd{
+  border: 1px solid black;
+}
+
+.gridObject{
+  border: 1px solid black
+}
