@@ -43,7 +43,7 @@ function App() {
         dragGrid={[50, 50]}
         resizeGrid={[50, 50]}
       >
-        Rnd
+        <textarea className="gridObject"></textarea>
       </Rnd>
     </>
 

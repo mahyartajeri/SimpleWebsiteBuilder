@@ -36,5 +36,12 @@ img {
 }
 
 .gridObject{
-  border: 1px solid black
+  border: 1px solid black;
+  width: 80%;
+  height: 80%;
+  font-size: 2em;
+}
+
+textarea {
+  resize: none;
 }
