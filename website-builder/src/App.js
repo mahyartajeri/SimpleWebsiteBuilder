@@ -1,25 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {[...Array(5000).keys()].map((i) => (<Cell index={i}></Cell>))}
     </div>
   );
+    
+  function Cell({index}) {
+    return <div className="grid" onClick={() => {
+      alert("INDEX:" + index)
+    }}></div>
+  }
 }
+ 
 
 export default App;
+
+
+/*get page height
+// get page width-use as condition in for loop 
+// 
+// i+1
+// nested for loop for the height 
+i+
+$(document).height();
+$(document).width();
+*/

@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.grid {
+  float: left;
+  outline: 1px solid gray;
+  width: 2vw;
+  min-height: 2vw;
+}
+
+.grid:hover {
+  background-color: red;
+}
