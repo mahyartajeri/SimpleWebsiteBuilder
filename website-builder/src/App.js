@@ -8,12 +8,14 @@ const style = {
   alignItems: "center",
   justifyContent: "center",
   border: "solid 1px #ddd",
-  background: "#f0f0f0"
+  background: "#fffff0"
 };
 
 
 function App() {
   const [dragState, setDragState] = useState({ width: "10vw", height: "10vw", x: 100, y: 100 })
+  const [dragState2, setDragState2] = useState({ width: "10vw", height: "10vw", x: 500, y: 500 })
+  const [dragState3, setDragState3] = useState({ width: "30vw", height: "20vw", x: 800, y: 600 })
 
   // let state = {
   //   width: 200,
@@ -43,8 +45,48 @@ function App() {
         dragGrid={[50, 50]}
         resizeGrid={[50, 50]}
       >
-        <textarea className="gridObject" ></textarea>
+        <textarea className="gridObject"></textarea>
       </Rnd>
+
+      <Rnd className="rnd"
+        style={style}
+        size={{ width: dragState2.width, height: dragState2.height }}
+        position={{ x: dragState2.x, y: dragState2.y }}
+        onDragStop={(e, d) => {
+          setDragState2({ ...dragState2, x: d.x, y: d.y });
+        }}
+        onResizeStop={(e, direction, ref, delta, position) => {
+          setDragState2({
+            width: ref.style.width,
+            height: ref.style.height,
+            ...position
+          });
+        }}
+        dragGrid={[50, 50]}
+        resizeGrid={[50, 50]}
+      >
+        <img src="https://static.frieze.com/files/inline-images/ross-body3.jpeg" className="gridObject" draggable="false"></img>
+      </Rnd>
+
+      <Rnd className="rnd"
+        style={style}
+        size={{ width: dragState3.width, height: dragState3.height }}
+        position={{ x: dragState3.x, y: dragState3.y }}
+        onDragStop={(e, d) => {
+          setDragState3({ ...dragState3, x: d.x, y: d.y });
+        }}
+        onResizeStop={(e, direction, ref, delta, position) => {
+          setDragState3({
+            width: ref.style.width,
+            height: ref.style.height,
+            ...position
+          });
+        }}
+        dragGrid={[50, 50]}
+        resizeGrid={[50, 50]}
+      >
+        <iframe className="gridObject" src="https://www.youtube.com/embed/Cj_4DupKfuk" title="JR Smith Chokes! LeBron 51 Points Game 1! 2018 NBA Finals" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen draggable="false"></iframe>
+      </Rnd >
     </>
 
     // <Rnd
