@@ -12,10 +12,25 @@ const style = {
 };
 
 
+function roundNum(n, num) {
+  let r = n % num
+  if (r >= num / 2) return n + (num - r)
+  else return n - r
+}
+
+function mouseEnter(e) {
+  var pos = e.position();
+  e.css('top', (pos.top) + 50 + 'px').fadeIn();
+
+}
+
 function App() {
-  const [dragState, setDragState] = useState({ width: "10vw", height: "10vw", x: 100, y: 100 })
+  const [dragState, setDragState] = useState({ width: "10vw", height: "10vw", x: 0, y: 0 })
   const [dragState2, setDragState2] = useState({ width: "10vw", height: "10vw", x: 500, y: 500 })
   const [dragState3, setDragState3] = useState({ width: "30vw", height: "20vw", x: 800, y: 600 })
+
+  const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 
   // let state = {
   //   width: 200,
@@ -24,16 +39,29 @@ function App() {
   //   y: 10
   // };
   return (
-    // <div className="App">
-    //   {[...Array(5000).keys()].map((i) => (<Cell index={i}></Cell>))}
-    // </div>
     <>
-      <Rnd className="rnd"
+      <div className="App">
+        {[...Array(5000).keys()].map((i) => (<Cell index={i}></Cell>))}
+      </div>
+
+      <Rnd
+        onMouseEnter={() => {
+          document.getElementById("1").style.background = "#000000"
+        }}
+        onMouseLeave={() => {
+          document.getElementById("1").style.background = "#fffff0"
+        }}
+        id="1"
+        className="rnd"
         style={style}
         size={{ width: dragState.width, height: dragState.height }}
         position={{ x: dragState.x, y: dragState.y }}
         onDragStop={(e, d) => {
-          setDragState({ ...dragState, x: d.x, y: d.y });
+          setDragState({ ...dragState, x: roundNum(d.x, vw / 50), y: roundNum(d.y, vw / 50) });
+          e.stopImmediatePropagation();
+        }}
+        onDrag={e => {
+          e.stopImmediatePropagation();
         }}
         onResizeStop={(e, direction, ref, delta, position) => {
           setDragState({
@@ -42,10 +70,11 @@ function App() {
             ...position
           });
         }}
-        dragGrid={[50, 50]}
-        resizeGrid={[50, 50]}
+        dragGrid={[vw / 50, vw / 50]}
+        resizeGrid={[vw / 50, vw / 50]}
+
       >
-        <textarea className="gridObject"></textarea>
+        <textarea className="gridObject" draggable="false"></textarea>
       </Rnd>
 
       <Rnd className="rnd"
@@ -107,7 +136,7 @@ function App() {
 
   function Cell({ index }) {
     return index === 75 ?
-      (<div className="grid image" onClick={() => {
+      (<div className="grid" onClick={() => {
         alert("INDEX:" + index)
       }}></div>)
       :

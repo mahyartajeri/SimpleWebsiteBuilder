@@ -16,7 +16,8 @@ code {
   float: left;
   outline: 1px solid gray;
   width: 2vw;
-  min-height: 2vw;
+  height: 2vw;
+  z-index: 1;
 }
 
 .grid:hover {
@@ -36,9 +37,10 @@ img {
 
 .gridObject{
   border: 1px solid black;
-  width: 90%;
-  height: 90%;
+  width: 80%;
+  height: 80%;
   font-size: 2em;
+  z-index: 2;
 }
 
 textarea {
