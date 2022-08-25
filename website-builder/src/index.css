@@ -12,13 +12,24 @@ code {
     monospace;
 }
 
+.mainDiv{
+}
+
+.gridDiv {
+  width: 80vw;
+  margin: 0 auto;
+  position:calc(100);
+}
+
 .grid {
   float: left;
   outline: 1px solid gray;
-  width: 2vw;
-  height: 2vw;
+  width: 4vw;
+  height: 4vw;
   z-index: 1;
+  text-align: justify;
 }
+
 
 .grid:hover {
   background-color: red;

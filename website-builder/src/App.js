@@ -3,6 +3,11 @@ import { render } from "react-dom"
 import { Rnd } from "react-rnd"
 import { useState } from "react"
 
+const w = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+const h = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
+const ratio = 25
+
 const style = {
   display: "flex",
   alignItems: "center",
@@ -21,16 +26,49 @@ function roundNum(n, num) {
 function mouseEnter(e) {
   var pos = e.position();
   e.css('top', (pos.top) + 50 + 'px').fadeIn();
-
 }
 
-function App() {
-  const [dragState, setDragState] = useState({ width: "10vw", height: "10vw", x: 0, y: 0 })
-  const [dragState2, setDragState2] = useState({ width: "10vw", height: "10vw", x: 500, y: 500 })
-  const [dragState3, setDragState3] = useState({ width: "30vw", height: "20vw", x: 800, y: 600 })
 
-  const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
+function App() {
+  const [dragStates, setDragStates] = useState(initializeDragStates())
+
+  // const [dragState, setDragState] = useState({ width: "10vw", height: "10vw", x: 0, y: 0 })
+  // const [dragState2, setDragState2] = useState({ width: "10vw", height: "10vw", x: 500, y: 500 })
+  // const [dragState3, setDragState3] = useState({ width: "30vw", height: "20vw", x: 800, y: 600 })
+
+
+  function initializeDragStates() {
+    let ds = []
+    let counter = 0
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 10; j++) {
+        let d = {
+          x: i * (w / ratio) * 6,
+          y: j * (w / ratio) * 6,
+          width: "12vw",
+          height: "12vw",
+          id: counter
+        }
+        counter += 1
+        ds.push(d)
+      }
+    }
+
+    return ds
+  }
+
+  function updateDragStates(ds) {
+    let dragStatesCopy = [...dragStates]
+    for (let i = 0; i < dragStatesCopy.length; i++) {
+      if (dragStatesCopy[i].id === ds.id) {
+        dragStatesCopy[i] = ds
+      }
+    }
+
+    console.log(dragStatesCopy)
+    setDragStates(dragStatesCopy)
+  }
 
   // let state = {
   //   width: 200,
@@ -39,12 +77,47 @@ function App() {
   //   y: 10
   // };
   return (
-    <>
-      <div className="App">
-        {[...Array(5000).keys()].map((i) => (<Cell index={i}></Cell>))}
-      </div>
+    <div className="mainDiv">
+      <div className="gridDiv">
+        <div className="App">
+          {[...Array(5000).keys()].map((i) => (<Cell index={i}></Cell>))}
+        </div>
 
-      <Rnd
+        {
+          dragStates.map((d) => (<Rnd
+            // onMouseEnter={() => {
+            //   document.getElementById(d.id).style.background = "#000000"
+            // }}
+            // onMouseLeave={() => {
+            //   document.getElementById(d.id).style.background = "#fffff0"
+            // }}
+            bounds=".gridDiv"
+            id={d.id}
+            className="rnd"
+            style={style}
+            size={{ width: d.width, height: d.height }}
+            position={{ x: d.x, y: d.y }}
+            onDragStop={(e, drag) => {
+              //setDragState({ ...dragState, x: roundNum(drag.x, vw / 50), y: roundNum(drag.y, vw / 50) });
+
+              updateDragStates({ x: roundNum(drag.x, w / ratio), y: roundNum(drag.y, w / ratio), width: d.width, height: d.height, id: d.id })
+              e.stopImmediatePropagation();
+            }}
+            onDrag={e => {
+              e.stopImmediatePropagation();
+            }}
+            onResizeStop={(e, direction, ref, delta, position) => {
+              updateDragStates({ x: d.x, y: d.y, width: ref.style.width, height: ref.style.height, id: d.id })
+            }}
+            dragGrid={[w / ratio, w / ratio]}
+            resizeGrid={[w / ratio, w / ratio]}
+
+          >
+            <textarea className="gridObject" draggable="false"></textarea>
+          </Rnd>))
+        }
+
+        {/* <Rnd
         onMouseEnter={() => {
           document.getElementById("1").style.background = "#000000"
         }}
@@ -115,8 +188,9 @@ function App() {
         resizeGrid={[50, 50]}
       >
         <iframe className="gridObject" src="https://www.youtube.com/embed/Cj_4DupKfuk" title="JR Smith Chokes! LeBron 51 Points Game 1! 2018 NBA Finals" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen draggable="false"></iframe>
-      </Rnd >
-    </>
+      </Rnd > */}
+      </div>
+    </div>
 
     // <Rnd
     //   size={{ width: state.width, height: state.height }}
@@ -135,15 +209,9 @@ function App() {
   );
 
   function Cell({ index }) {
-    return index === 75 ?
-      (<div className="grid" onClick={() => {
-        alert("INDEX:" + index)
-      }}></div>)
-      :
-      (<div className="grid" onClick={() => {
-        alert("INDEX:" + index)
-      }}></div>)
-
+    return (<div className="grid stretch" onClick={() => {
+      alert("INDEX:" + index)
+    }}></div>)
   }
 }
 
